@@ -1,7 +1,27 @@
 require "blockchain_service/adapter/bitcoin"
 
 module BlockchainService
-  class Bitcoin
+  class Bitcoin    
+    
+    # include BlockchainService::ConnectionConfigurable        
+
+    class << self
+      attr_accessor :configuration
+    end
+
+    def self.configure
+      self.configuration ||= Configuration.new
+      yield(configuration)
+    end
+
+    class Configuration
+      attr_accessor :connection
+
+      def initialize
+        @connection = {}
+      end
+    end
+
     class Block
       attr_accessor :transactions, :height
     end
@@ -10,8 +30,9 @@ module BlockchainService
       attr_accessor :txid, :block_height, :recipient, :amount
     end
 
-    def initialize(connection_override = {})
-      @connection_override = connection_override
+    def initialize(connection_setting = {})
+      default = self.class.configuration&.connection || {}
+      @connection_setting = default.merge(connection_setting)
     end
 
     def blockheight
@@ -61,7 +82,7 @@ module BlockchainService
     private
 
     def adapter
-      @adapter ||= BlockchainService::Adapter.new(:bitcoin, @connection_override)
+      @adapter ||= BlockchainService::Adapter.new(:bitcoin, @connection_setting)
     end
   end
 end

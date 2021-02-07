@@ -1,6 +1,7 @@
 require "bigdecimal/util"
 
 require "blockchain_service/version"
+require "blockchain_service/connection_configurable"
 require "blockchain_service/connection/base"
 require "blockchain_service/adapter/base"
 require "blockchain_service/adapter/bitcoin"

@@ -14,6 +14,19 @@ gem 'blockchain_service', github: "krtschmr/blockchain_service", branch: "main"
 
 TODO: Write usage instructions here
 
+```
+BlockchainService::Bitcoin.configure do |rpc_config|
+  rpc_config.connection = {
+    user: "test",
+    password: "test",
+    host: "192.168.0.166",
+    port: 18332,
+    debug: false,
+    network: :testnet
+  }
+end
+```
+
 ## Development
 
 ## Contributing
