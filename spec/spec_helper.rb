@@ -37,4 +37,15 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+  config.before(:suite) do
+    # make sure there's a wallet loaded
+    connection = BlockchainService::Connection::Bitcoin.new(CONNECTION_DEFAULTS)
+    connection.loadwallet(TEST_WALLET_NAME)
+  rescue => e
+    # if the wallet is already loaded, it throws an exception, which is a good thing in this case
+    unless e.message.include?("is already loaded. (ErrorCode: -4)")
+      # if we can't open the test-wallet, we need to abort the whole spec
+      raise "can't load wallet '#{TEST_WALLET_NAME}' on RPC. Suite aborted."
+    end
+  end
 end
