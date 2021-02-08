@@ -40,6 +40,13 @@ RSpec.configure do |config|
   config.before(:suite) do
     # make sure there's a wallet loaded
     connection = BlockchainService::Connection::Bitcoin.new(CONNECTION_DEFAULTS)
+    begin
+      # but first close all current ones.
+      connection.listwallets.each { |wallet| connection.unloadwallet(wallet) }
+    rescue
+      # shall never happen
+    end
+
     connection.loadwallet(TEST_WALLET_NAME)
   rescue => e
     # if the wallet is already loaded, it throws an exception, which is a good thing in this case

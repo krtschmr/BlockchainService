@@ -1,26 +1,8 @@
 require "blockchain_service/adapter/bitcoin"
 
 module BlockchainService
-  class Bitcoin    
-    
-    # include BlockchainService::ConnectionConfigurable        
-
-    class << self
-      attr_accessor :configuration
-    end
-
-    def self.configure
-      self.configuration ||= Configuration.new
-      yield(configuration)
-    end
-
-    class Configuration
-      attr_accessor :connection
-
-      def initialize
-        @connection = {}
-      end
-    end
+  class Bitcoin
+    include BlockchainService::ConnectionConfigurable
 
     class Block
       attr_accessor :transactions, :height
@@ -45,6 +27,10 @@ module BlockchainService
 
     def get_block(id)
       adapter.block(id)
+    end
+
+    def pending_transactions
+      adapter.pending_transactions
     end
 
     # This method filters down a list of transactions (outputs) from a block
@@ -77,6 +63,10 @@ module BlockchainService
           end
         end
       end
+    end
+
+    def transaction_by_hash(txid, include_watchonly: true)
+      adapter.transaction_by_hash(txid, include_watchonly: true)
     end
 
     private

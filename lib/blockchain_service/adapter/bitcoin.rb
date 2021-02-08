@@ -25,6 +25,10 @@ module BlockchainService
         json = connection.transaction_by_hash(txid, include_watchonly: include_watchonly)
         OpenStruct.new(json)
       end
+
+      def pending_transactions
+        connection.listtransactions("*", 1000, 0, true).select { |tx| tx["confirmations"] == 0 }
+      end
     end
   end
 end

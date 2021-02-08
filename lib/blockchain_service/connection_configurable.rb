@@ -1,20 +1,24 @@
-# module BlockchainService
-#   module ConnectionConfigurable
-#     class << self
-#       attr_accessor :configuration
-#     end
+module BlockchainService
+  module ConnectionConfigurable
+    def self.included(klass)
+      klass.extend(ClassMethods)
+    end
 
-#     def self.configure
-#       self.configuration ||= Configuration.new
-#       yield(configuration)
-#     end
+    module ClassMethods
+      attr_accessor :configuration
 
-#     class Configuration
-#       attr_accessor :connection
+      def configure
+        self.configuration ||= Configuration.new
+        yield(configuration)
+      end
+    end
 
-#       def initialize
-#         @connection = {}
-#       end
-#     end
-#   end
-# end
+    class Configuration
+      attr_accessor :connection
+
+      def initialize
+        @connection = {}
+      end
+    end
+  end
+end
