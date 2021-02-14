@@ -17,7 +17,7 @@ require "blockchain_service"
 CONNECTION_DEFAULTS = {
   user: "test",
   password: "test",
-  host: "192.168.0.166",
+  host: "192.168.0.21",
   port: 18332,
   debug: false,
   network: :testnet
