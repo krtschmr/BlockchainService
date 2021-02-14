@@ -15,6 +15,10 @@ module BlockchainService
         connection.getblockhash(id)
       end
 
+      def add_watchonly_address(address, rescan: false)
+        connection.importaddress(address, "", rescan)
+      end
+
       def block(block_number_or_hash)
         hash = /\A\d+\Z/.match?(block_number_or_hash.to_s) ? block_hash(block_number_or_hash) : block_number_or_hash
 

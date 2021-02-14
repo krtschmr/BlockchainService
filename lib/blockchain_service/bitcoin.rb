@@ -33,6 +33,10 @@ module BlockchainService
       adapter.pending_transactions
     end
 
+    def add_address(address, rescan: false)
+      adapter.add_watchonly_address(address, rescan: rescan)
+    end
+
     # This method filters down a list of transactions (outputs) from a block
     def incoming_transactions_in_block(id, watch_addresses = [])
       return [] unless watch_addresses.any?
