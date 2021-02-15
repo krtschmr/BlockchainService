@@ -61,11 +61,18 @@ RSpec.describe BlockchainService::Connection::Bitcore do
   end
 
   describe "error handling" do
+    # starting 21.0 we receive an error that no wallet is loaded. before it was a plain method not supported
+    expected_error = if ["0.18.1", "0.19.1", "0.20.1"].include?(ENV["BITCOIND_VERSION"])
+      BlockchainService::Connection::MethodNotSupported
+    else
+      BlockchainService::Connection::NoWalletLoaded
+    end
+
     it "returns an error if no wallet is loaded" do
       connection.unloadwallet(TEST_WALLET_NAME)
       expect {
         connection.getnewaddress("", "bech32")
-      }.to raise_exception BlockchainService::Connection::NoWalletLoaded
+      }.to raise_exception(expected_error)
     ensure
       connection.loadwallet(TEST_WALLET_NAME)
     end

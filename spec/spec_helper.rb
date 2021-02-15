@@ -14,11 +14,22 @@ end
 
 require "blockchain_service"
 
+PORTS = {
+  "0.18.1" => 21181,
+  "0.19.1" => 21191,
+  "0.20.1" => 21201,
+  "0.21.0" => 21210
+}
+
+if ENV["BITCOIND_VERSION"] && !PORTS[ENV["BITCOIND_VERSION"]]
+  raise "BITCOIND_VERSION is unknown. Known versions are #{PORTS.keys.join(", ")}"
+end
+
 CONNECTION_DEFAULTS = {
   user: "test",
   password: "test",
-  host: "192.168.0.21",
-  port: 18332,
+  host: "192.168.0.10",
+  port: PORTS.fetch(ENV["BITCOIND_VERSION"], 21210),
   debug: false,
   network: :testnet
 }

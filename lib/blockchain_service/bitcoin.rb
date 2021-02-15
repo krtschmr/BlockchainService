@@ -17,6 +17,10 @@ module BlockchainService
       @connection_setting = default.merge(connection_setting)
     end
 
+    def status
+      adapter.status
+    end
+
     def blockheight
       adapter.blockheight
     end
@@ -29,12 +33,21 @@ module BlockchainService
       adapter.block(id)
     end
 
+    def valid_address?(address)
+      adapter.valid_address?(address)
+    end
+
     def pending_transactions
       adapter.pending_transactions
     end
 
     def add_address(address, rescan: false)
       adapter.add_watchonly_address(address, rescan: rescan)
+      true
+    end
+
+    def create_address(type = "bech32")
+      adapter.create_address(type)
     end
 
     # This method filters down a list of transactions (outputs) from a block

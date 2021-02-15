@@ -1,0 +1,36 @@
+cd /blockchain
+
+# download and Install latest 4 bitcoin-core versions
+wget https://bitcoincore.org/bin/bitcoin-core-0.18.1/bitcoin-0.18.1-x86_64-linux-gnu.tar.gz
+wget https://bitcoincore.org/bin/bitcoin-core-0.19.1/bitcoin-0.19.1-x86_64-linux-gnu.tar.gz
+wget https://bitcoincore.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-x86_64-linux-gnu.tar.gz
+wget https://bitcoincore.org/bin/bitcoin-core-0.21.0/bitcoin-0.21.0-x86_64-linux-gnu.tar.gz
+
+tar -xvf bitcoin-0.18.1-x86_64-linux-gnu.tar.gz
+tar -xvf bitcoin-0.19.1-x86_64-linux-gnu.tar.gz
+tar -xvf bitcoin-0.20.1-x86_64-linux-gnu.tar.gz
+tar -xvf bitcoin-0.21.0-x86_64-linux-gnu.tar.gz
+
+rm bitcoin-0.18.1-x86_64-linux-gnu.tar.gz
+rm bitcoin-0.19.1-x86_64-linux-gnu.tar.gz
+rm bitcoin-0.20.1-x86_64-linux-gnu.tar.gz
+rm bitcoin-0.21.0-x86_64-linux-gnu.tar.gz
+
+# example conf
+# 
+# testnet=1
+# daemon=1
+# datadir=/blockchain/bitcoin-0.18.1
+# [test]
+# bind=192.168.0.10:20181
+# rpcbind=192.168.0.10:21181
+# rpcallowip=192.168.0.0/16
+# rpcuser=test 
+# rpcpassword=test
+
+# start all 4 versions
+
+/blockchain/bitcoin-0.18.1/bin/bitcoind --conf=/blockchain/bitcoin-testnet-0.18.1.conf
+/blockchain/bitcoin-0.19.1/bin/bitcoind --conf=/blockchain/bitcoin-testnet-0.19.1.conf
+/blockchain/bitcoin-0.20.1/bin/bitcoind --conf=/blockchain/bitcoin-testnet-0.20.1.conf
+/blockchain/bitcoin-0.21.0/bin/bitcoind --conf=/blockchain/bitcoin-testnet-0.21.0.conf

@@ -15,6 +15,14 @@ module BlockchainService
         connection.getblockhash(id)
       end
 
+      def status
+        connection.getblockchaininfo
+      end
+
+      def valid_address?(address)
+        connection.validateaddress(address)["isvalid"]
+      end
+
       def add_watchonly_address(address, rescan: false)
         connection.importaddress(address, "", rescan)
       end

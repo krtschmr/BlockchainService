@@ -1,12 +1,50 @@
 RSpec.describe BlockchainService::Bitcoin do
   let(:service) { BlockchainService.new(:bitcoin, CONNECTION_DEFAULTS) }
 
+  it "returns general status of the blockchain" do
+    status = service.status
+    expect(status).to be_a Hash
+    expect(status["chain"]).to eq("test")
+  end
+
   it "returns blockheight" do
     expect(service.blockheight).to be_a Integer
   end
 
   it "returns the last block" do
     expect(service.last_block).to be_a BlockchainService::Adapter::Bitcoin::Block
+  end
+
+  context "address validation" do
+    it "returns false for wrong addresses" do
+      expect(service.valid_address?("tb1CraigWRightIsNotSatoshiHeIsAFraudScamstar")).to be false
+    end
+
+    it "returns true for a valid addresses" do
+      expect(service.valid_address?("tb1qlvj89hd5wsjcpj7s6mtd7dgesp4crv8vuj4jwe")).to be true
+    end
+  end
+
+  context "adding a (watchonly) address" do
+    it "succeeds" do
+      expect(service.add_address("tb1qjly0cclkgxw3tklmvafnurvt6ghcwz9jj0tsw6")).to be true
+    end
+
+    it "fails with an invalid address" do
+      expect {
+        service.add_address("tb1CraigWRightIsNotSatoshiHeIsAFraudScamstar")
+      }.to raise_error(BlockchainService::Connection::ResponseError)
+    end
+  end
+
+  it "returns a transaction for an address that we observe" do
+    tx = service.transaction_by_hash("c7b9af659609166a70b152012b5b6a7cbed8638eb58559579974c1e849eb66c1")
+    expect(tx).to be_a OpenStruct
+    expect(tx.txid).to eq("c7b9af659609166a70b152012b5b6a7cbed8638eb58559579974c1e849eb66c1")
+  end
+
+  it "creates a new address" do
+    expect(service.create_address).to be_a String
   end
 
   describe "scanning for incoming transactions" do
