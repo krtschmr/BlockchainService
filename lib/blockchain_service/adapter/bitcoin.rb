@@ -27,6 +27,10 @@ module BlockchainService
         connection.importaddress(address, "", rescan)
       end
 
+      def broadcast(hexstring, maxfeerate: 0)
+        connection.sendrawtransaction(hexstring, maxfeerate)
+      end
+
       def block(block_number_or_hash)
         hash = /\A\d+\Z/.match?(block_number_or_hash.to_s) ? block_hash(block_number_or_hash) : block_number_or_hash
 

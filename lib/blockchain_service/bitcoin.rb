@@ -50,6 +50,10 @@ module BlockchainService
       adapter.create_address(type)
     end
 
+    def broadcast(hexstring, maxfeerate: 0)
+      adapter.broadcast(hexstring, maxfeerate: maxfeerate)
+    end
+
     # This method filters down a list of transactions (outputs) from a block
     def incoming_transactions_in_block(id, watch_addresses = [])
       return [] unless watch_addresses.any?

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    blockchain_service (0.0.1.4)
+    blockchain_service (0.0.1.5)
 
 GEM
   remote: https://rubygems.org/
